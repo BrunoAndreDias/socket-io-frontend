@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import socketIOClient from "socket.io-client";
 import { useTranslation } from 'react-i18next';
-
-const endpoint = "http://127.0.0.1:4001"
 
 function TemperatureText() {
   const { t } = useTranslation();
   return <>{t('temperature')}</>
 }
 
-function TemperatureCard() {
+function TemperatureCard({ socket }) {
   const [timezone, setTimezone] = useState('')
   const [summary, setSummary] = useState('')
   const [temperature, setTemperature] = useState('')
@@ -21,12 +18,11 @@ function TemperatureCard() {
       setTime(new Date().toLocaleString())
     }, 1000)
 
-    const socket = socketIOClient(endpoint);
-
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const lat = position.coords.latitude;
         const long = position.coords.longitude;
+        console.log('locat sent', lat, long)
         await socket.emit("location", { lat, long });
       })
     }
@@ -36,7 +32,7 @@ function TemperatureCard() {
       setSummary(data.hourly.summary);
       setTemperature(data.currently.temperature);
     });
-  }, []);
+  }, [socket]);
 
   return (
     <div style={styles.container}>

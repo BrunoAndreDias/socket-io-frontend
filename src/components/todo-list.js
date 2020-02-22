@@ -1,44 +1,57 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { List } from 'antd';
 import { useTranslation } from 'react-i18next';
-
-const data = [
-  'Racing car sprays burning fuel into crowd.',
-  'Japanese princess to wed commoner.',
-  'Australian walks 100km after outback crash.',
-  'Man charged over missing wedding girl.',
-  'Los Angeles battles huge wildfires.',
-];
+import { AddTodo } from './add-todo';
 
 function Title() {
   const { t } = useTranslation();
-  return <div style={{ textAlign: 'center' }}>
+  return <div style={{ textAlign: 'center', marginBottom: 20 }}>
     {t('title')}
   </div>
 }
 
-function TodoList() {
+function TodoList({ socket }) {
+  const [list, setList] = useState([]);
+  socket.on('all-todo', list => setList(list));
+
+  function removeTodo(item) {
+    socket.emit('delete-todo', item);
+  }
+
   return (
     <div style={styles.container}>
       <List
-        header={<Suspense fallback="loading">
-          <Title />
-        </Suspense>}
+        style={styles.listContainer}
+        header={
+          <Suspense fallback="loading">
+            <Title />
+          </Suspense>
+        }
         bordered
-        dataSource={data}
+        dataSource={list}
         renderItem={item => (
-          <List.Item>
-            {item}
+          <List.Item
+            onClick={() => removeTodo(item)}>
+            {item.description}
           </List.Item>
         )}
       />
+      <AddTodo socket={socket} />
     </div>
   );
 }
 const styles = {
   container: {
     display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     justifyContent: 'center'
+  },
+  listContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    textAlign: 'center'
   }
 }
 
