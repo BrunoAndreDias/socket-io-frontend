@@ -1,6 +1,6 @@
 import socketIOClient from "socket.io-client";
 
-const endpoint = "http://127.0.0.1:4001"
+const endpoint = process.env.REACT_APP_API_URL
 
 export function SocketCommunication() {
   return socketIOClient(endpoint);
