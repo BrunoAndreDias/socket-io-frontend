@@ -22,7 +22,6 @@ function TemperatureCard({ socket }) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const lat = position.coords.latitude;
         const long = position.coords.longitude;
-        console.log('locat sent', lat, long)
         await socket.emit("location", { lat, long });
       })
     }
