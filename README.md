@@ -20,7 +20,6 @@ There is also communication with socketIo to get from the api real time weather.
 Once this is a simple api there wasn't need to implement caching. I would do it with graphql but since i didn't use it because I'm already using React instead of Vue i didn't implemented. React doesn't have a good way of caching itself.
 
 
-For some reason that i din't get it, at this moment the dockerfile from the api isn't working properly.
 
 
 # Check the links for more details:
