@@ -6,6 +6,13 @@ REACT_APP_API_URL="http://127.0.0.1:4001"
 
 ## App description
 
+To start it locally:
+
+```
+npm install
+npm start
+```
+
 This application use ant design and i18next to support multi language.
 Was generated from create-react-app.
 
